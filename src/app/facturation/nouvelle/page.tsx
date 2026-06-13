@@ -1,6 +1,8 @@
 // src/app/facturation/nouvelle/page.tsx
 "use client";
 
+export const dynamic = "force-dynamic";
+
 import { Suspense } from "react";
 import { useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
