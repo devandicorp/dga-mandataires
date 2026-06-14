@@ -27,6 +27,8 @@ export interface Mandataire {
     photos_detoure: { url: string; filename: string }[];
     gerant: string;
     score: string;
+    facebook_page_id: string | null;
+    facebook_page_token: string | null;
 }
 
 export interface Facture {
