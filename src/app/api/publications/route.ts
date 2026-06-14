@@ -21,6 +21,48 @@ export async function POST(request: NextRequest) {
     try {
         const body = await request.json();
 
+        // Récupérer le token Facebook du mandataire si fourni
+        let facebookPostId = null;
+
+        if (body.mandataire_id && body.date_publication) {
+            const { data: mandataire } = await supabase
+                .from("mandataires")
+                .select("facebook_page_id, facebook_page_token, nom")
+                .eq("id", body.mandataire_id)
+                .single();
+
+            if (mandataire?.facebook_page_id && mandataire?.facebook_page_token) {
+                const publishDate = new Date(body.date_publication);
+                const now = new Date();
+                const message = [body.description, body.hashtags].filter(Boolean).join("\n\n");
+
+                if (publishDate > now) {
+                    // Publication planifiée
+                    const scheduledTime = Math.floor(publishDate.getTime() / 1000);
+
+                    const res = await fetch(
+                        `https://graph.facebook.com/v21.0/${mandataire.facebook_page_id}/feed`,
+                        {
+                            method: "POST",
+                            headers: { "Content-Type": "application/json" },
+                            body: JSON.stringify({
+                                message,
+                                scheduled_publish_time: scheduledTime,
+                                published: false,
+                                access_token: mandataire.facebook_page_token,
+                            }),
+                        }
+                    );
+
+                    const data = await res.json();
+                    if (!data.error) {
+                        facebookPostId = data.id;
+                        body.statut = "Planifiée";
+                    }
+                }
+            }
+        }
+
         const { error } = await supabase.from("publications").insert({
             mandataire_id: body.mandataire_id,
             mandataire_nom: body.mandataire_nom,
@@ -34,6 +76,7 @@ export async function POST(request: NextRequest) {
             statut: body.statut || "À planifier",
             created_by: body.created_by,
             notes: body.notes,
+            facebook_post_id: facebookPostId,
         });
 
         if (error) throw new Error(error.message);
