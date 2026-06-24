@@ -7,6 +7,8 @@ import Sidebar from "@/components/Sidebar";
 import { Users, Building2, MapPin, TrendingUp, Search } from "lucide-react";
 import { Mandataire } from "@/lib/supabase";
 
+export const dynamic = "force-dynamic";
+
 export default function Dashboard() {
   const [mandataires, setMandataires] = useState<Mandataire[]>([]);
   const [loading, setLoading] = useState(true);
