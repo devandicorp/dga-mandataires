@@ -14,6 +14,31 @@ export default function Dashboard() {
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
   const [filtreForfait, setFiltreForfait] = useState("");
+  const [authChecked, setAuthChecked] = useState(false);
+
+  useEffect(() => {
+    import("@supabase/ssr").then(({ createBrowserClient }) => {
+      const supabase = createBrowserClient(
+        process.env.NEXT_PUBLIC_SUPABASE_URL!,
+        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+      );
+      supabase.auth.getSession().then(({ data: { session } }: any) => {
+        if (!session) {
+          window.location.replace("/login");
+        } else {
+          setAuthChecked(true);
+        }
+      });
+    });
+  }, []);
+
+  if (!authChecked) {
+    return (
+      <div className="min-h-screen bg-[#080810] flex items-center justify-center">
+        <div className="w-8 h-8 border-2 border-cyan-500/30 border-t-cyan-500 rounded-full animate-spin" />
+      </div>
+    );
+  }
 
   useEffect(() => {
     fetch("/api/mandataires/list?full=true")
