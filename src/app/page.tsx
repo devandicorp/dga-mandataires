@@ -32,15 +32,8 @@ export default function Dashboard() {
     });
   }, []);
 
-  if (!authChecked) {
-    return (
-      <div className="min-h-screen bg-[#080810] flex items-center justify-center">
-        <div className="w-8 h-8 border-2 border-cyan-500/30 border-t-cyan-500 rounded-full animate-spin" />
-      </div>
-    );
-  }
-
   useEffect(() => {
+    if (!authChecked) return;
     fetch("/api/mandataires/list?full=true")
       .then((res) => res.json())
       .then((data) => {
@@ -48,7 +41,7 @@ export default function Dashboard() {
         setLoading(false);
       })
       .catch(() => setLoading(false));
-  }, []);
+  }, [authChecked]);
 
   const mandatairesFiltres = mandataires.filter((m) => {
     const matchSearch =
@@ -65,6 +58,14 @@ export default function Dashboard() {
   const totalProspection = mandataires.filter((m) => m.forfait === "PROSPECTION").length;
   const zones = new Set(mandataires.map((m) => m.zone).filter(Boolean)).size;
 
+  if (!authChecked) {
+    return (
+      <div className="min-h-screen bg-[#080810] flex items-center justify-center">
+        <div className="w-8 h-8 border-2 border-cyan-500/30 border-t-cyan-500 rounded-full animate-spin" />
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-[#080810] text-white">
       <Sidebar />
@@ -75,7 +76,6 @@ export default function Dashboard() {
         </div>
 
         <div className="px-8 py-6">
-          {/* KPIs */}
           <div className="grid grid-cols-4 gap-4 mb-8">
             <div className="bg-[#111118] border border-white/5 rounded-2xl p-5">
               <div className="flex items-center justify-between mb-3">
@@ -128,30 +128,17 @@ export default function Dashboard() {
             </div>
           </div>
 
-          {/* Filtres */}
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-white font-semibold">
               Tous les Mandataires{" "}
-              <span className="text-white/30 font-normal text-sm ml-1">
-                ({mandatairesFiltres.length})
-              </span>
+              <span className="text-white/30 font-normal text-sm ml-1">({mandatairesFiltres.length})</span>
             </h2>
             <div className="flex items-center gap-3">
               <div className="relative">
                 <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-white/30" />
-                <input
-                  type="text"
-                  placeholder="Rechercher..."
-                  value={search}
-                  onChange={(e) => setSearch(e.target.value)}
-                  className="bg-[#111118] border border-white/10 rounded-xl pl-9 pr-4 py-2 text-sm text-white placeholder:text-white/20 focus:outline-none focus:border-cyan-500/50 w-56"
-                />
+                <input type="text" placeholder="Rechercher..." value={search} onChange={(e) => setSearch(e.target.value)} className="bg-[#111118] border border-white/10 rounded-xl pl-9 pr-4 py-2 text-sm text-white placeholder:text-white/20 focus:outline-none focus:border-cyan-500/50 w-56" />
               </div>
-              <select
-                value={filtreForfait}
-                onChange={(e) => setFiltreForfait(e.target.value)}
-                className="bg-[#111118] border border-white/10 rounded-xl px-4 py-2 text-sm text-white/60 focus:outline-none focus:border-cyan-500/50"
-              >
+              <select value={filtreForfait} onChange={(e) => setFiltreForfait(e.target.value)} className="bg-[#111118] border border-white/10 rounded-xl px-4 py-2 text-sm text-white/60 focus:outline-none focus:border-cyan-500/50">
                 <option value="">Tous les forfaits</option>
                 <option value="PRESENCE">Présence</option>
                 <option value="PROSPECTION">Prospection</option>
@@ -159,15 +146,12 @@ export default function Dashboard() {
             </div>
           </div>
 
-          {/* Grille */}
           {loading ? (
             <div className="flex items-center justify-center py-20">
               <div className="w-8 h-8 border-2 border-cyan-500/30 border-t-cyan-500 rounded-full animate-spin" />
             </div>
           ) : mandatairesFiltres.length === 0 ? (
-            <div className="text-center py-20 text-white/30">
-              Aucun mandataire trouvé
-            </div>
+            <div className="text-center py-20 text-white/30">Aucun mandataire trouvé</div>
           ) : (
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
               {mandatairesFiltres.map((mandataire) => (
