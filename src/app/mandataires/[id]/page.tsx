@@ -1,6 +1,7 @@
 import { getMandataireById, getMandataires } from "@/lib/supabase";
 import Sidebar from "@/components/Sidebar";
 import GalerieSection from "@/components/GalerieSection";
+import RessourcesSection from "@/components/RessourcesSection";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { ArrowLeft, MapPin, Phone, Mail, Globe, Calendar, User } from "lucide-react";
@@ -197,6 +198,14 @@ export default async function FicheMandataire({ params }: Props) {
                                     photos_detoure={mandataire.photos_detoure}
                                 />
                             </div>
+                        </div>
+
+                        {/* Ressources */}
+                        <div className="bg-[#111118] border border-white/5 rounded-2xl p-6 mt-6">
+                            <RessourcesSection
+                                mandataireId={id}
+                                mandataireNom={mandataire.nom}
+                            />
                         </div>
 
                     </div>

@@ -2,8 +2,20 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { LayoutDashboard, Users, FileText, Settings, HelpCircle, LogOut, Plus, UserPlus, CalendarDays } from "lucide-react";
+import { usePathname, useRouter } from "next/navigation";
+import { createBrowserClient } from "@supabase/ssr";
+import {
+    LayoutDashboard,
+    Users,
+    FileText,
+    Settings,
+    HelpCircle,
+    LogOut,
+    Plus,
+    UserPlus,
+    CalendarDays,
+    ShieldCheck,
+} from "lucide-react";
 
 const navItems = [
     { href: "/", label: "Dashboard", icon: LayoutDashboard },
@@ -11,11 +23,24 @@ const navItems = [
     { href: "/facturation", label: "Facturation", icon: FileText },
     { href: "/calendrier", label: "Calendrier", icon: CalendarDays },
     { href: "/inscription", label: "Inscription", icon: UserPlus },
+    { href: "/admin/users", label: "Utilisateurs", icon: ShieldCheck },
     { href: "/parametres", label: "Paramètres", icon: Settings },
 ];
 
 export default function Sidebar() {
     const pathname = usePathname();
+    const router = useRouter();
+
+    const supabase = createBrowserClient(
+        process.env.NEXT_PUBLIC_SUPABASE_URL!,
+        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+    );
+
+    const handleLogout = async () => {
+        await supabase.auth.signOut();
+        document.cookie = "user_role=; path=/; max-age=0";
+        window.location.replace("/login");
+    };
 
     return (
         <aside className="fixed left-0 top-0 h-screen w-56 bg-[#0D0D12] border-r border-white/5 flex flex-col z-50">
@@ -41,6 +66,7 @@ export default function Sidebar() {
                         <Link
                             key={item.href}
                             href={item.href}
+                            prefetch={true}
                             className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all duration-200 group
                 ${isActive
                                     ? "bg-white/10 text-white"
@@ -74,7 +100,10 @@ export default function Sidebar() {
                     <HelpCircle size={16} />
                     Aide
                 </button>
-                <button className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-white/40 hover:text-white hover:bg-white/5 transition-all">
+                <button
+                    onClick={handleLogout}
+                    className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-white/40 hover:text-white hover:bg-white/5 transition-all"
+                >
                     <LogOut size={16} />
                     Déconnexion
                 </button>
