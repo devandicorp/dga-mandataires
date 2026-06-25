@@ -102,6 +102,23 @@
     "reference_paiement": ""
   },
   {
+    "airtable_id": "recG244kuVeA5JZyU",
+    "facture_id": "28",
+    "numero_facture": "FAC-2026-028",
+    "mandataire_nom": "recSduRHdUDKeazt3",
+    "forfait": "PRESENCE",
+    "mode_paiement": "Wave Money",
+    "date_paiement": "2026-06-09",
+    "periode": "Juin 2026",
+    "montant": 30000,
+    "devise": "FCFA",
+    "date_emission": "2026-06-09",
+    "date_echeance": "2026-06-30",
+    "periodicite": "Mensuelle ",
+    "statut": "Payée",
+    "reference_paiement": ""
+  },
+  {
     "airtable_id": "recHGSNYEjTdX6ubl",
     "facture_id": "10",
     "numero_facture": "FAC-2026-010",
@@ -357,6 +374,23 @@
     "reference_paiement": ""
   },
   {
+    "airtable_id": "reclKiBgwa6Uowknj",
+    "facture_id": "27",
+    "numero_facture": "FAC-2026-027",
+    "mandataire_nom": "reczoe1HFIx6D0rcB",
+    "forfait": "PRESENCE",
+    "mode_paiement": "Espèce",
+    "date_paiement": "2026-06-09",
+    "periode": "Juin 2026",
+    "montant": 30000,
+    "devise": "FCFA",
+    "date_emission": "2026-06-09",
+    "date_echeance": "2026-06-30",
+    "periodicite": "Mensuelle ",
+    "statut": "Payée",
+    "reference_paiement": ""
+  },
+  {
     "airtable_id": "recma0KPecpbndSyn",
     "facture_id": "1",
     "numero_facture": "FAC-2026-001",
@@ -437,6 +471,23 @@
     "devise": "FCFA",
     "date_emission": "2026-05-16",
     "date_echeance": "2026-06-30",
+    "periodicite": "Mensuelle ",
+    "statut": "Payée",
+    "reference_paiement": ""
+  },
+  {
+    "airtable_id": "recuiZVC1n7t6C28w",
+    "facture_id": "29",
+    "numero_facture": "FAC-2026-029",
+    "mandataire_nom": "rec6uJ1ziQJsjb7so",
+    "forfait": "PRESENCE",
+    "mode_paiement": "Wave Money",
+    "date_paiement": "2026-07-15",
+    "periode": "Juillet 2026",
+    "montant": 30000,
+    "devise": "FCFA",
+    "date_emission": "2026-06-15",
+    "date_echeance": "2026-07-31",
     "periodicite": "Mensuelle ",
     "statut": "Payée",
     "reference_paiement": ""

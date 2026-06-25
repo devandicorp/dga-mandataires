@@ -62,7 +62,7 @@ export default function MandataireEspace({ mandataire, publications, ressources,
     const [activeTab, setActiveTab] = useState("profil");
     const router = useRouter();
 
-    const photo = mandataire.photos_pro?.[0]?.url || null;
+    const photo = mandataire.photos_ai[0]?.url || mandataire.photos_pro[0]?.url || null;
     const initiales = mandataire.nom.split(" ").slice(0, 2).map((n: string) => n[0]).join("");
 
     const handleLogout = async () => {

@@ -10,7 +10,7 @@ interface Props {
 }
 
 export default function MandataireCard({ mandataire }: Props) {
-    const photo = mandataire.photos_pro[0]?.url || null;
+    const photo = mandataire.photos_ai[0]?.url || mandataire.photos_pro[0]?.url || null;
     const initiales = mandataire.nom
         .split(" ")
         .slice(0, 2)
