@@ -42,6 +42,12 @@ export default async function MonEspace() {
         .eq("mandataire_id", appUser.mandataire_id)
         .order("created_at", { ascending: false });
 
+    const { data: userFull } = await supabase
+        .from("users")
+        .select("email_pro")
+        .eq("id", appUser.id)
+        .single();
+
     return (
         <MandataireEspace
             mandataire={mandataire}
@@ -49,6 +55,8 @@ export default async function MonEspace() {
             ressources={ressources || []}
             leads={leads || []}
             userName={appUser.nom}
+            userId={appUser.id}
+            emailPro={userFull?.email_pro || null}
         />
     );
 }

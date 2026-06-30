@@ -7,10 +7,11 @@ import { createBrowserClient } from "@supabase/ssr";
 import {
     User, Calendar, FileText, Download,
     LogOut, MapPin, Phone, Mail, Globe,
-    Clock, CheckCircle, Users, ChevronRight
+    Clock, CheckCircle, Users
 } from "lucide-react";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
+import WebmailSection from "@/components/WebmailSection";
 
 const supabase = createBrowserClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -23,12 +24,15 @@ interface Props {
     ressources: any[];
     leads: any[];
     userName: string;
+    userId: string;
+    emailPro: string | null;
 }
 
 const TABS = [
     { id: "profil", label: "Profil", icon: User },
     { id: "leads", label: "Leads", icon: Users },
     { id: "calendrier", label: "Calendrier", icon: Calendar },
+    { id: "email", label: "Email", icon: Mail },
     { id: "ressources", label: "Ressources", icon: FileText },
 ];
 
@@ -58,7 +62,7 @@ const TYPE_LABELS: Record<string, string> = {
     document: "📄 Document",
 };
 
-export default function MandataireEspace({ mandataire, publications, ressources, leads, userName }: Props) {
+export default function MandataireEspace({ mandataire, publications, ressources, leads, userName, userId, emailPro }: Props) {
     const [activeTab, setActiveTab] = useState("profil");
     const router = useRouter();
 
@@ -275,6 +279,11 @@ export default function MandataireEspace({ mandataire, publications, ressources,
                             })
                         )}
                     </div>
+                )}
+
+                {/* Tab Email */}
+                {activeTab === "email" && (
+                    <WebmailSection userId={userId} emailPro={emailPro} />
                 )}
 
                 {/* Tab Ressources */}
